@@ -37,3 +37,15 @@ function dict_size(dict)
 	end
 	return n
 end
+
+function get_tile(x,y)
+	if spr_map[y] then
+		if spr_map[y][x] then
+			return spr_map[y][x]
+		else
+			return 0
+		end
+	else
+		return 0
+	end
+end

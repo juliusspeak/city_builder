@@ -22,6 +22,7 @@ function set_globals()
 	particles = {}
 --sprites----------------------
 	road_sprites = {8,9,10,11,12,13,24,25,27,28,40,42}
+	river_sprites = {36,37,38,52,53,54}
 	spr_map = {}
 	for y=-1,16 do
 		spr_map[y] = {}

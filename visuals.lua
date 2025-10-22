@@ -188,3 +188,160 @@ function all_particles()
 	last_money = money
 	process_particle()
 end
+
+function draw_river(x,y)
+	local rvr_spr = 37
+	spr_map[y][x] = rvr_spr
+
+	local visited = {}
+	for x=-1,16 do
+		visited[x] = {}
+		for y=-1,16 do
+			visited[x][y] = false
+		end
+	end 
+	visited[x][y] = true
+
+	local need_visit = get_next_river_tiles(x,y,rvr_spr)
+
+	while #need_visit > 0 do
+		x = need_visit[1][1]
+		y = need_visit[1][2]
+
+		if x >= 16 then
+			break
+		end
+
+		
+		rvr_spr = choose_river_spr(x,y)
+		spr_map[y][x] = rvr_spr
+		
+		local new_tiles = get_next_river_tiles(x,y,rvr_spr)
+		if #new_tiles != 0 then
+			for t in all(new_tiles) do
+				local tx,ty = t[1],t[2]
+				if tx >= 0 and tx <= 16 and ty >= 0 and ty <= 14 then
+					if visited[t[1]][t[2]] == false then
+						visited[tx][ty] = true
+						add(need_visit,t)
+					end
+				end
+			end
+		end
+		deli(need_visit,1)
+
+		if #need_visit == 0 then
+			if x < 16 then
+				if rvr_spr == 38 then
+					if y == 14 then
+						rvr_spr = 37
+					else
+						rvr_spr = 36
+					end
+				end
+				if rvr_spr == 52 then
+					if y == 0 then
+						rvr_spr = 36
+					elseif y == 14 then
+						rvr_spr = 53
+					end
+				end
+				if rvr_spr == 53 then
+					if y == 0 then
+						rvr_spr = 36
+					elseif y == 14 then
+						rvr_spr = 53
+					end
+				end
+				if rvr_spr == 54 then
+					if y == 0 then
+						rvr_spr = 37
+					else
+						rvr_spr = 53
+					end
+				end
+				spr_map[y][x] = rvr_spr
+				x = x+1
+				if x <= 16 then
+					visited[x][y] = true
+					add(need_visit, {x, y})
+				end
+			end
+		end
+	end
+end
+
+function get_next_river_tiles(x,y,n)
+	local tiles = {}
+	if n == 36 then
+		add(tiles,{x+1,y})
+		add(tiles,{x,y+1})
+	end
+	if n == 37 then
+		add(tiles,{x+1,y})
+		add(tiles,{x-1,y})
+	end
+	if n == 38 then
+		add(tiles,{x-1,y})
+		add(tiles,{x,y+1})
+	end
+	if n == 52 then
+		add(tiles,{x,y-1})
+		add(tiles,{x,y+1})
+	end
+	if n == 53 then
+		add(tiles,{x,y-1})
+		add(tiles,{x+1,y})
+	end
+	if n == 54 then
+		add(tiles,{x-1,y})
+		add(tiles,{x,y-1})
+	end
+	return tiles
+end
+
+function choose_river_spr(x,y)
+	local n = has(river_sprites,get_tile(x,y-1))
+	local s = has(river_sprites,get_tile(x,y+1))
+	local w = has(river_sprites,get_tile(x-1,y))
+	local e = has(river_sprites,get_tile(x+1,y))
+	local sprites = {}
+	if not (n or s or w or e) then return 52 end
+	if not n and s and w and not e then
+		add(sprites,38)
+	end
+	if n and not s and w and not e then
+		add(sprites,54)
+	end
+	if n and not s and not w and e then
+		add(sprites,53)
+	end
+	if not n and s and not w and e then
+		add(sprites,36)
+	end
+	if n and s and not w and not e then
+		add(sprites,52)
+	end
+	if not n and not s and w and e then
+		add(sprites,37)
+	end
+	if n and not s and not w and not e then
+		add(sprites,52)
+		add(sprites,53)
+	end
+	if not n and not s and not w and e then
+		add(sprites,37)
+		add(sprites,36)
+		add(sprites,53)
+	end
+	if not n and s and not w and not e then
+		add(sprites,52)
+		add(sprites,36)
+	end
+	if not n and not s and w and not e then
+		add(sprites,37)
+		add(sprites,38)
+		add(sprites,54)
+	end
+	return sprites[flr(rnd(#sprites))+1]
+end
