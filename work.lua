@@ -1,17 +1,17 @@
 
 function work_increase_workers(work, count)
-    local workers = work.info["workers"]
+    local workers = work["workers"]
     if workers < 300 then
         count = min(300 - workers,count)
-        set_info(work,"workers",workers+count)
+        set_bld_val(work,"workers",workers+count)
     end
     return count
 end
 
 function work_reduce_workers(work, count)
-    local workers = work.info["workers"]
+    local workers = work["workers"]
     count = min(count,workers)
-    set_info(work,"workers",workers-count)
+    set_bld_val(work,"workers",workers-count)
 end
 
 function get_empty_works()
@@ -19,7 +19,7 @@ function get_empty_works()
     local del_list = {}
 
     for w in all(works) do
-        if w.info["workers"] >= 300 then
+        if w["workers"] >= 300 then
             add(del_list,w)
         end
     end

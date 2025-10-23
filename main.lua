@@ -1,7 +1,7 @@
 function _init()
 	set_globals()
 	poke(0x5f2d, 0x1)
-	draw_river(0,flr(rnd(15)))
+	draw_river(0,flr(rnd(5))+5)
 	fix_roads()
 end
 

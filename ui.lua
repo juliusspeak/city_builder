@@ -19,10 +19,12 @@ function windows()
 	title = cur_window .. " (".. tostr(ceil(win_x/8))..","..tostr(ceil(win_y/8)).. ")"
 	local w = #title * 4 + 10
 	local h = 42
+	if cur_window != "build" then
+		win_x, win_y = 8, 8
+		w, h = 108, 108
+	end
 
-    draw_square(w,h)
-    print(title,win_x+3, win_y+3,5)
-
+	draw_square(w,h)
 	highlighte_menu_line()
 	menu_lines = {}
 	if cur_window == "build" then
@@ -30,6 +32,8 @@ function windows()
 	else
 		draw_building_menu_lines(win_x,win_y)
 	end
+
+    print(title,win_x+3, win_y+3,5)
 end
 
 function draw_square(w,h)
@@ -43,10 +47,11 @@ end
 
 function draw_build_lines(x,y)
 	menu_line(x+3,y+12,"road")
-	menu_line(x+3,y+18,"house")
-	menu_line(x+3,y+24,"work")
-	menu_line(x+3,y+30,"shop")
-	menu_line(x+3,y+36,"clinic")
+	menu_line(x+3,y+18,"bridge")
+	menu_line(x+3,y+24,"house")
+	menu_line(x+3,y+30,"work")
+	menu_line(x+3,y+36,"shop")
+	menu_line(x+3,y+42,"clinic")
 end
 
 function menu_line(_x,_y,name)
@@ -72,8 +77,8 @@ function draw_building_menu_lines(x,y)
 	end
 
 	local n = 1
-	for name, data in pairs(bld.info) do
-		local line = name.." "..data
+	for name, data in pairs(bld:get_info()) do
+		local line = name.." "..tostr(data)
 		print(line,x+3,y+6+6*n,5)
 		menu_lines[line] = {
 			x = x+3,

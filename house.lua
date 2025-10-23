@@ -2,18 +2,18 @@ function update_house_connects_to_works()
     for house in all(get_blds("house")) do
         
         if dict_size(house.works) > 0 then
-            set_info(house,"has work","yes")
-            set_info(house,"work hr",999)
+            set_bld_val(house,"has work","yes")
+            set_bld_val(house,"work hr",999)
 
             for work, hr in pairs(house.works) do
-                if hr < house.info["work hr"] then
-                   set_info(house,"work hr",hr)
+                if hr < house["work hr"] then
+                   set_bld_val(house,"work hr",hr)
                 end
             end 
             
         else
-            set_info(house,"has work","no")
-            set_info(house,"work hr",0)
+            set_bld_val(house,"has work","no")
+            set_bld_val(house,"work hr",0)
         end
     end
 end
@@ -66,18 +66,18 @@ function update_house_connects_to_shops()
     for house in all(get_blds("house")) do
         
         if dict_size(house.shops) > 0 then
-            set_info(house,"has shop","yes")
-            set_info(house,"shop hr",999)
+            set_bld_val(house,"has shop","yes")
+            set_bld_val(house,"shop hr",999)
 
             for shop, hr in pairs(house.shops) do
-                if hr < house.info["shop hr"] then
-                   set_info(house,"shop hr",hr)
+                if hr < house["shop hr"] then
+                   set_bld_val(house,"shop hr",hr)
                 end
             end 
             
         else
-            set_info(house,"has shop","no")
-            set_info(house,"shop hr",0)
+            set_bld_val(house,"has shop","no")
+            set_bld_val(house,"shop hr",0)
         end
     end
 end
@@ -87,7 +87,7 @@ function get_houses_with_work()
     local del_list = {}
 
     for h in all(houses) do
-        if h.info["has work"] == "no" then
+        if h["has work"] == "no" then
             add(del_list,h)
         end
     end
@@ -98,17 +98,17 @@ function get_houses_with_work()
 end
 
 function house_increase_tenats(house, count)
-    local tenants = house.info["tenants"]
+    local tenants = house["tenants"]
     if tenants < 100 then
         count = min(100 - tenants,count)
-        set_info(house,"tenants",tenants+count)
+        set_bld_val(house,"tenants",tenants+count)
     end
     return count
 end
 function house_reduce_tenats(house, count)
-    local tenants = house.info["tenants"]
+    local tenants = house["tenants"]
     count = min(count,tenants)
-    set_info(house,"tenants",tenants-count)
+    set_bld_val(house,"tenants",tenants-count)
 end
 
 function get_houses_with_shop()
@@ -116,7 +116,7 @@ function get_houses_with_shop()
     local del_list = {}
 
     for h in all(houses) do
-        if h.info["has shop"] == "no" then
+        if h["has shop"] == "no" then
             add(del_list,h)
         end
     end

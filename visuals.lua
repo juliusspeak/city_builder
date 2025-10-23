@@ -41,7 +41,7 @@ function draw_cursor(x,y,n)
 	end
 --hammer
 	if n == 2 then
-		if cur_menu_line != "road" then
+		if cur_menu_line != "road" and cur_menu_line != "bridge" then
 			rect(x,y,x+16,y+16,6)
 		end
 		spr(25,x,y)
@@ -111,24 +111,28 @@ function daytime()
 end
 
 function is_work_mark(bld)
-	local x,y = 0,0
-	x = bld.x*8
-	y = bld.y*8
+	no_mark_list = {"bridge"}
+	local x,y = bld.x*8, bld.y*8
+	
 	local mark = false
 	if bld.sprite == "house" do
-		if bld.info["has work"] == "yes" do
+		if bld["has work"] == "yes" do
 			mark = true
 		end
 	end
 	if bld.sprite == "work" do
-		if bld.info["workers"] > 0 do
+		if bld["workers"] > 0 do
 			mark = true
 		end
 	end
 	if bld.sprite == "shop" do
-		if bld.info["buyers"] > 0 do
+		if bld["buyers"] > 0 do
 			mark = true
 		end
+	end
+	
+	if has(no_mark_list, bld.sprite) then
+		return
 	end
 
 	if mark == true do

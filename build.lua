@@ -3,7 +3,7 @@ function build(bld)
 	local y = mouse_cell.y/8
 	local price = bld_price[bld]
 	
-	if can_build(x,y,price) then
+	if can_build(x,y,price,bld) then
 		spr_build(bld,x,y)
 		money -= price
 		local building = building(bld,x,y)
@@ -13,19 +13,25 @@ function build(bld)
 	end
 end
 
-function can_build(x,y,price)
-	if spr_map[y][x] == 0 and
-	spr_map[y][x+1] == 0 and
-	spr_map[y+1][x] == 0 and
-	spr_map[y+1][x+1] == 0 then
-		if money >= price then
-			return true
-		else
-			return false
+function can_build(x,y,price,bld)
+	local permit = true
+	
+	if bld == "bridge" then
+		if not has({37,52},spr_map[y][x]) then
+			permit = false
 		end
 	else
-		return false
+		if spr_map[y][x] != 0 or spr_map[y][x+1] != 0 or
+		spr_map[y+1][x] != 0 or spr_map[y+1][x+1] != 0 then
+			permit = false
+		end
 	end
+
+	if money < price then
+		permit = false
+	end
+
+	return permit
 end
 
 function spr_build(bld,x,y)
@@ -38,11 +44,23 @@ function spr_build(bld,x,y)
         spr = {6,7,22,23}
 	elseif bld == "shop" then
         spr = {34,35,50,51}
+	elseif bld == "bridge" then
+		if spr_map[y][x] == 37 then
+        	spr = {59}
+		elseif spr_map[y][x] == 52 then
+        	spr = {43}
+		end
 	end
     spr_map[y][x] = spr[1]
-    spr_map[y][x+1] = spr[2]
-    spr_map[y+1][x] = spr[3]
-    spr_map[y+1][x+1] = spr[4]
+	if spr[2] != nil then
+    	spr_map[y][x+1] = spr[2]
+	end
+	if spr[3] != nil then
+    	spr_map[y+1][x] = spr[3]
+	end
+	if spr[4] != nil then
+    	spr_map[y+1][x+1] = spr[4]
+	end
 end
 
 function building(name,x,y)
@@ -53,19 +71,38 @@ function building(name,x,y)
 		info = {}
 	}
 	if name == "house" then
-		obj["info"]["tenants"] = 100
-		obj["info"]["has work"] = "no"
-		obj["info"]["has shop"] = "no"
-		obj["info"]["work hr"] = 0
-		obj["info"]["shop hr"] = 0
+		obj["work hr"] = 0
+		obj["shop hr"] = 0
+		obj["has work"] = "no"
+		obj["has shop"] = "no"
+		obj["tenants"] = 100
 		obj["works"] = {}
 		obj["shops"] = {}
+
+		obj["max tenants"] = 100
 	elseif name == "work" then
-		obj["info"]["workers"] = 0
+		obj["workers"] = 0
+		obj["max workers"] = 300
 	elseif name == "shop" then
-		obj["info"]["buyers"] = 0
+		obj["buyers"] = 0
+		obj["max buyers"] = 500
 	end
 	
+	function obj:get_info()
+		if name == "house" then
+			obj["info"]["tenants:"] = self["tenants"].."/"..self["max tenants"]
+			obj["info"]["connected to work:"] = self["has work"]
+			obj["info"]["connected to shop:"] = self["has shop"]
+			obj["info"]["work travel:"] = self["work hr"].." hr"
+			obj["info"]["shop travel:"] = self["shop hr"].." hr"
+		elseif name == "work" then
+			obj["info"]["workers:"] = self["workers"].."/"..self["max workers"]
+		elseif name == "shop" then
+			obj["info"]["buyers:"] = self["buyers"].."/"..self["max buyers"]
+		end
+		return obj["info"]
+	end
+
 	function obj:self_destroy()
 		spr_map[self.y][self.x] = 0
 		spr_map[self.y][self.x+1] = 0

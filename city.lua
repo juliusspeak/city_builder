@@ -24,10 +24,10 @@ function go_to_work()
     end
 
     for house in all(houses) do
-        local part = ceil(100/house.info["work hr"])
+        local part = ceil(100/house["work hr"])
         local work = get_nearest_work(house)
 
-        if work != nil and work.info["workers"] < 300 and house.info["tenants"] > 0 then
+        if work != nil and work["workers"] < 300 and house["tenants"] > 0 then
             local remain = work_increase_workers(work, part)
             house_reduce_tenats(house, remain)
         end
@@ -42,10 +42,10 @@ function go_to_shop()
     end
 
     for house in all(houses) do
-        local part = ceil(100/house.info["shop hr"])
+        local part = ceil(100/house["shop hr"])
         local shop = get_nearest_shop(house)
 
-        if shop != nil and shop.info["buyers"] < 500 and house.info["tenants"] > 0 then
+        if shop != nil and shop["buyers"] < 500 and house["tenants"] > 0 then
             local remain = shop_increase_buyers(shop, part)
             house_reduce_tenats(house, remain)
         end
@@ -70,17 +70,17 @@ function go_to_home(from)
         local from_bld
         local type
         if from == "work" then
-            part = ceil(100/house.info["work hr"])
+            part = ceil(100/house["work hr"])
             from_bld = get_nearest_work(house)
             type = "workers"
         elseif from == "shop" then
-            part = ceil(100/house.info["work hr"])
+            part = ceil(100/house["work hr"])
             from_bld = get_nearest_shop(house)
             type = "buyers"
         end
 
 
-        if from_bld != nil and from_bld.info[type] > 0 and house.info["tenants"] < 100 then
+        if from_bld != nil and from_bld[type] > 0 and house["tenants"] < 100 then
             local remain = house_increase_tenats(house, part)
             if from == "work" then
                 work_reduce_workers(from_bld, remain)
@@ -96,7 +96,7 @@ function pay_for_work()
     local workers = 0
     
     for w in all(works) do
-        workers += w.info["workers"]
+        workers += w["workers"]
     end
 
     if money >= ceil(workers/10) then
@@ -110,7 +110,7 @@ function sell_goods()
     local buyers = 0
     
     for b in all(shops) do
-        buyers += b.info["buyers"]
+        buyers += b["buyers"]
     end
 
     if goods >= 0 then
@@ -130,6 +130,6 @@ function get_blds(name)
     return blds
 end
 
-function set_info(bld,name,val)
-    bld.info[name] = val
+function set_bld_val(bld,name,val)
+    bld[name] = val
 end

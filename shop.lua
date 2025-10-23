@@ -11,16 +11,16 @@ function get_nearest_shop(house)
 end
 
 function shop_increase_buyers(shop, count)
-    local buyers = shop.info["buyers"]
+    local buyers = shop["buyers"]
     if buyers < 500 then
         count = min(500 - buyers,count)
-        set_info(shop,"buyers",buyers+count)
+        set_bld_val(shop,"buyers",buyers+count)
     end
     return count
 end
 
 function shop_reduce_buyers(shop, count)
-    local buyers = shop.info["buyers"]
+    local buyers = shop["buyers"]
     count = min(count,buyers)
-    set_info(shop,"buyers",buyers-count)
+    set_bld_val(shop,"buyers",buyers-count)
 end

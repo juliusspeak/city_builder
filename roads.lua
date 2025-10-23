@@ -31,50 +31,54 @@ function build_road()
 end
 
 function set_sides(n,s,e,w,x,y)
+	local spr_n
 	if n and s and not e and not w then
-		spr_map[y][x] = 24
+		spr_n = 24
 	end
 	if not n and not s and e and w then
-		spr_map[y][x] = 9
+		spr_n = 9
 	end
 	if not n and not s and	not e and w then
-		spr_map[y][x] = 9
+		spr_n = 9
 	end
 	if not n and not s and	e and not w then
-		spr_map[y][x] = 9
+		spr_n = 9
 	end
 	if n and not s and	not e and not w then
-		spr_map[y][x] = 24
+		spr_n = 24
 	end
 	if not n and s and	not e and not w then
-		spr_map[y][x] = 24
+		spr_n = 24
 	end
 	if n and s and e and w then
-		spr_map[y][x] = 13
+		spr_n = 13
 	end
 	if not n and s and e and w then
-		spr_map[y][x] = 11
+		spr_n = 11
 	end
 	if n and s and e and not w then
-		spr_map[y][x] = 12
+		spr_n = 12
 	end
 	if n and s and not e and w then
-		spr_map[y][x] = 27
+		spr_n = 27
 	end
 	if n and not s and e and w then
-		spr_map[y][x] = 28
+		spr_n = 28
 	end
 	if not n and not e and w and s then
-		spr_map[y][x] = 8
+		spr_n = 8
 	end
 	if not n and e and not w and s then
-		spr_map[y][x] = 10
+		spr_n = 10
 	end
 	if n and not e and w and not s then
-		spr_map[y][x] = 40
+		spr_n = 40
 	end
 	if n and e and not w and not s then
-		spr_map[y][x] = 42
+		spr_n = 42
+	end
+	if spr_map[y][x] != 43 and spr_map[y][x] != 59 then
+		spr_map[y][x] = spr_n
 	end
 end
 

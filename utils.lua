@@ -21,6 +21,7 @@ function has(tbl, val)
 	return false
 end
 
+
 function merge(a1, a2)
 	for val in all(a2) do
 		add(a1, val)
