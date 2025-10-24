@@ -21,7 +21,7 @@ function set_globals()
 
 	particles = {}
 --sprites----------------------
-	road_sprites = {8,9,10,11,12,13,24,25,27,28,40,42, 43,59}
+	road_sprites = {8,9,10,11,12,13,24,27,28,40,42, 43,59}
 	river_sprites = {36,37,38,52,53,54}
 	spr_map = {}
 	for y=-1,16 do
@@ -47,7 +47,7 @@ function set_globals()
 	end	
 	last_bld = nil
 --info-------------------------
-	money = 1000
+	money = 3000
 	last_money = 0
 	goods = 0
 	last_goods = 0

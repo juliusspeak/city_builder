@@ -18,7 +18,7 @@ function windows()
 	local title
 	title = cur_window .. " (".. tostr(ceil(win_x/8))..","..tostr(ceil(win_y/8)).. ")"
 	local w = #title * 4 + 10
-	local h = 42
+	local h = #building_names * 7 + 7
 	if cur_window != "build" then
 		win_x, win_y = 8, 8
 		w, h = 108, 108
@@ -78,8 +78,16 @@ function draw_building_menu_lines(x,y)
 
 	local n = 1
 	for name, data in pairs(bld:get_info()) do
-		local line = name.." "..tostr(data)
+		local line = name
+		local line2 = tostr(data)
+		local col2 = 1
+		if line2 == "yes" then
+			col2 = 3
+		elseif line2 == "no" then
+			col2 = -8
+		end
 		print(line,x+3,y+6+6*n,5)
+		print(line2,x+3+#line*4,y+6+6*n,col2)
 		menu_lines[line] = {
 			x = x+3,
 			y = y+6+6*n,

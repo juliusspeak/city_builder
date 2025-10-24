@@ -1,11 +1,13 @@
 function _init()
 	set_globals()
 	poke(0x5f2d, 0x1)
-	draw_river(0,flr(rnd(5))+5)
-	fix_roads()
+	map_preporation()
 end
 
 function _update()
+	--if stat(57) == false then
+	--	music(0, 500)
+	--end
 	update_globals()
 	input()
 end

@@ -24,11 +24,11 @@ function go_to_work()
     end
 
     for house in all(houses) do
-        local part = ceil(100/house["work hr"])
+        local part = ceil(house["max tenants"]/house["work hr"])
         local work = get_nearest_work(house)
 
-        if work != nil and work["workers"] < 300 and house["tenants"] > 0 then
-            local remain = work_increase_workers(work, part)
+        if work != nil and work["workers"] < work["max workers"] and house["tenants"] > 0 then
+            local remain = work_increase_workers(work, min(house["tenants"],part))
             house_reduce_tenats(house, remain)
         end
 
@@ -42,11 +42,11 @@ function go_to_shop()
     end
 
     for house in all(houses) do
-        local part = ceil(100/house["shop hr"])
+        local part = ceil(house["max tenants"]/house["shop hr"])
         local shop = get_nearest_shop(house)
 
-        if shop != nil and shop["buyers"] < 500 and house["tenants"] > 0 then
-            local remain = shop_increase_buyers(shop, part)
+        if shop != nil and shop["buyers"] < shop["max buyers"] and house["tenants"] > 0 then
+            local remain = shop_increase_buyers(shop, min(house["tenants"],part))
             house_reduce_tenats(house, remain)
         end
 
@@ -70,18 +70,19 @@ function go_to_home(from)
         local from_bld
         local type
         if from == "work" then
-            part = ceil(100/house["work hr"])
+            part = ceil(house["max tenants"]/house["work hr"])
             from_bld = get_nearest_work(house)
             type = "workers"
         elseif from == "shop" then
-            part = ceil(100/house["work hr"])
+            part = ceil(house["max tenants"]/house["work hr"])
             from_bld = get_nearest_shop(house)
             type = "buyers"
         end
 
 
-        if from_bld != nil and from_bld[type] > 0 and house["tenants"] < 100 then
-            local remain = house_increase_tenats(house, part)
+        if from_bld != nil and from_bld[type] > 0 and house["tenants"] < house["max tenants"] then
+            local remain = house_increase_tenats(house, min(from_bld[type],part))
+            
             if from == "work" then
                 work_reduce_workers(from_bld, remain)
             elseif from == "shop" then
@@ -101,7 +102,7 @@ function pay_for_work()
 
     if money >= ceil(workers/10) then
         money -= ceil(workers/10)
-        goods += ceil(workers)
+        goods += ceil(workers/100)
     end
 end
 
@@ -114,10 +115,10 @@ function sell_goods()
     end
 
     if goods >= 0 then
-        local sold = min(goods,buyers)
+        local sold = min(goods,ceil(buyers/100))
         
         goods -= sold
-        money += ceil(sold/7)
+        money += sold * 15
     end
 end
 function get_blds(name)

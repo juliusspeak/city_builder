@@ -30,7 +30,7 @@ function update_works_for_houses()
         for house in all(houses) do
             local dist_to_work = dist(house.x,house.y+2,work.x,work.y+2)
             if dist_to_work > 0 then
-                house.works[work] = dist_to_work
+                house.works[work] = get_real_dist(dist_to_work)
             else
                 if has(house.works,work) then
                     house.works[work] = nil
@@ -52,7 +52,7 @@ function update_shops_for_houses()
         for house in all(houses) do
             local dist_to_shop = dist(house.x,house.y+2,shop.x,shop.y+2)
             if dist_to_shop > 0 then
-                house.shops[shop] = dist_to_shop
+                house.shops[shop] = get_real_dist(dist_to_shop)
             else
                 if has(house.shops,shop) then
                     house.shops[shop] = nil
@@ -61,7 +61,14 @@ function update_shops_for_houses()
         end
     end
 end
-
+function get_real_dist(val)
+    if flr(val/5) < 1 then
+        val = 1
+    else
+        val = flr(val/5)
+    end
+    return val
+end
 function update_house_connects_to_shops()
     for house in all(get_blds("house")) do
         

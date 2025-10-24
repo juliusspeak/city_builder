@@ -32,11 +32,11 @@ end
 
 function set_sides(n,s,e,w,x,y)
 	local spr_n
-	if n and s and not e and not w then
-		spr_n = 24
-	end
 	if not n and not s and e and w then
 		spr_n = 9
+	end
+	if n and s and not e and not w then
+		spr_n = 24
 	end
 	if not n and not s and	not e and w then
 		spr_n = 9
@@ -76,6 +76,9 @@ function set_sides(n,s,e,w,x,y)
 	end
 	if n and e and not w and not s then
 		spr_n = 42
+	end
+	if spr_n == nil then
+    	spr_n = 9
 	end
 	if spr_map[y][x] != 43 and spr_map[y][x] != 59 then
 		spr_map[y][x] = spr_n

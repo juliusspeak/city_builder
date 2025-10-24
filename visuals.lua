@@ -42,7 +42,11 @@ function draw_cursor(x,y,n)
 --hammer
 	if n == 2 then
 		if cur_menu_line != "road" and cur_menu_line != "bridge" then
-			rect(x,y,x+16,y+16,6)
+			if can_build(x/8,y/8,bld_price[cur_menu_line],cur_menu_line) then
+				rect(x,y,x+16,y+16,6)
+			else
+				rect(x,y,x+16,y+16,8)
+			end
 		end
 		spr(25,x,y)
 	end
@@ -348,4 +352,9 @@ function choose_river_spr(x,y)
 		add(sprites,54)
 	end
 	return sprites[flr(rnd(#sprites))+1]
+end
+
+function map_preporation()
+	draw_river(0,flr(rnd(5))+5)
+	fix_roads()
 end

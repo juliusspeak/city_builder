@@ -8,7 +8,6 @@ function build(bld)
 		money -= price
 		local building = building(bld,x,y)
 		add(builds,building)
-		
 		sfx(1)
 	end
 end
@@ -82,9 +81,11 @@ function building(name,x,y)
 		obj["max tenants"] = 100
 	elseif name == "work" then
 		obj["workers"] = 0
+
 		obj["max workers"] = 300
 	elseif name == "shop" then
 		obj["buyers"] = 0
+
 		obj["max buyers"] = 500
 	end
 	
@@ -132,6 +133,7 @@ function demolish(x,y)
 			bld:self_destroy()
 			del(builds,bld)
 			sfx(2)
+			money += flr(bld_price[bld.sprite]/2)
 		end
 		
 	end
