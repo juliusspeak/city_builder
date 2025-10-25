@@ -45,7 +45,7 @@ function set_globals()
 		power = 1000,
 		farm = 500,
 		field = 100,
-		clinic = 200,
+		--clinic = 200,
 		work = 300,
 		shop = 500
 	}
@@ -55,7 +55,7 @@ function set_globals()
 	end	
 	last_bld = nil
 --info-------------------------
-	money = 3000
+	money = 2000
 	last_money = 0
 	goods = 0
 	last_goods = 0

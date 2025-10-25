@@ -18,7 +18,7 @@ function windows()
 	local title
 	title = cur_window
 	local w = 50
-	local h = #building_names * 7 + 7
+	local h = (#building_names-1) * 7 + 7
 	if cur_window != "build" then
 		win_x, win_y = 8, 8
 		w, h = 108, 108
@@ -54,7 +54,7 @@ function draw_build_lines(x,y)
 	menu_line(x+3,y+42,"shop")
 	menu_line(x+3,y+48,"farm")
 	menu_line(x+3,y+54,"field")
-	menu_line(x+3,y+60,"clinic")
+	--menu_line(x+3,y+60,"clinic")
 end
 
 function menu_line(_x,_y,name)
@@ -126,7 +126,12 @@ function show_info()
     print("population: "..population,win_x+3, win_y+3+7*3,5)
     print("goods: "..goods,win_x+3, win_y+3+7*4,5)
 	
-    print("houses: "..tostr(#get_blds("house")),win_x+3, win_y+3+7*6,5)
-    print("works: "..tostr(#get_blds("work")),win_x+3, win_y+3+7*7,5)
-    print("shops: "..tostr(#get_blds("shop")),win_x+3, win_y+3+7*8,5)
+	local n = 1
+	for b in all(building_names) do
+		print(b..": "..tostr(#get_blds(b)),win_x+3, (win_y-10)+7*(6+n),5)
+		n += 1
+	end
+    --print("houses: "..tostr(#get_blds("house")),win_x+3, win_y+3+7*6,5)
+    --print("works: "..tostr(#get_blds("work")),win_x+3, win_y+3+7*7,5)
+    --print("shops: "..tostr(#get_blds("shop")),win_x+3, win_y+3+7*8,5)
 end

@@ -5,9 +5,9 @@ function _init()
 end
 
 function _update()
-	--if stat(57) == false then
-	--	music(0, 500)
-	--end
+	if stat(57) == false then
+		music(0, 500)
+	end
 	update_globals()
 	input()
 end
