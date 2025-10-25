@@ -136,10 +136,10 @@ function set_win_coor()
 		win_x = mouse_cell.x-x_size
 	end
 	
-	if mouse_cell.y < 64 then
+	if mouse_cell.y < 40 then
 		win_y = mouse_cell.y
 	else
-		win_y = 64
+		win_y = 40
 	end
 	
 	if win_x < 8 then

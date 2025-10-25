@@ -52,7 +52,9 @@ function draw_build_lines(x,y)
 	menu_line(x+3,y+30,"power")
 	menu_line(x+3,y+36,"work")
 	menu_line(x+3,y+42,"shop")
-	menu_line(x+3,y+48,"clinic")
+	menu_line(x+3,y+48,"farm")
+	menu_line(x+3,y+54,"field")
+	menu_line(x+3,y+60,"clinic")
 end
 
 function menu_line(_x,_y,name)

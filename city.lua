@@ -1,17 +1,24 @@
 function update_city()
     update_power_map()
-    update_work_power()
+    update_blds_with_power()
+    update_farms_with_fields()
 
     update_house_list_of("work")
     update_house_connects_to("work")
     update_house_list_of("shop")
     update_house_connects_to("shop")
+    update_house_list_of("farm")
+    update_house_connects_to("farm")
 
     if hour >= 6 and hour < 12 then
         go_to_build("work")
+        go_to_build("farm")
+        die_at_work()
+        breed_people()
         pay_for_work()
     elseif hour >= 12 and hour < 14 then
         go_to_home("work")
+        go_to_home("farm")
     elseif hour >= 14 and hour < 20 then
         go_to_build("shop")
         sell_goods()
@@ -73,30 +80,43 @@ end
 function pay_for_work()
     local works = get_blds("work")
     local workers = 0
-    
+    local local_goods = 0
+
     for w in all(works) do
         workers += w["workers"]
+        if w["has power"] == "yes" then
+            local_goods += workers/50
+        else
+            local_goods += workers/100
+        end
     end
+    local_goods = flr(local_goods)
 
     if money >= ceil(workers/10) then
         money -= ceil(workers/10)
-        goods += ceil(workers/100)
+        goods += local_goods
     end
 end
 
 function sell_goods()
     local shops = get_blds("shop")
     local buyers = 0
+    local local_goods = 0
     
     for b in all(shops) do
         buyers += b["buyers"]
+        if b["has power"] == "yes" then
+            local_goods += (buyers/100) + (buyers/100*0.5)
+        else
+            local_goods += buyers/100
+        end
     end
 
     if goods >= 0 then
-        local sold = min(goods,ceil(buyers/100))
+        local sold = min(goods,local_goods)
         
-        goods -= sold
-        money += sold * 15
+        goods -= flr(sold)
+        money += flr(sold * 15)
     end
 end
 function get_blds(name)

@@ -42,7 +42,9 @@ function set_globals()
 		road = 10,
 		bridge = 50,
 		house = 100,
-		power = 250,
+		power = 1000,
+		farm = 500,
+		field = 100,
 		clinic = 200,
 		work = 300,
 		shop = 500
@@ -91,7 +93,15 @@ function set_globals()
 			ppl_name = "tenants",
 			max_ppl = "max tenants",
         },
+		farm = {
+            dict = "farms",
+            var_name = "has farm",
+            hr_name = "farm hr",
+			ppl_name = "farmers",
+			max_ppl = "max farmers",
+		}
     }
+	
 end
 
 function update_globals()
@@ -124,10 +134,16 @@ function update_globals()
 		day += 1
 		hour = 0
 	end
-	
 	count_people()
 end
 
 function count_people()
-	population = #get_blds("house") * 100
+	local total_ppl = 0
+	for b,v in all(builds) do
+		if connect_types[b.sprite] then
+			local people_name = connect_types[b.sprite]["ppl_name"]
+			total_ppl += b[people_name]
+		end
+	end
+	population = total_ppl
 end

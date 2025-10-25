@@ -117,7 +117,7 @@ function daytime()
 end
 
 function is_work_mark(bld)
-	no_mark_list = {"bridge","power"}
+	no_mark_list = {"bridge","power","field"}
 	local x,y = bld.x*8, bld.y*8
 	
 	local mark = false
@@ -133,6 +133,11 @@ function is_work_mark(bld)
 	end
 	if bld.sprite == "shop" do
 		if bld["buyers"] > 0 do
+			mark = true
+		end
+	end
+	if bld.sprite == "farm" do
+		if bld["fields"] > 0 and bld["farmers"] > 0 do
 			mark = true
 		end
 	end
@@ -404,6 +409,13 @@ function hover()
 			fill_circle_tiles(bld.x+1,bld.y,bld.radius,12)
 			fill_circle_tiles(bld.x,bld.y+1,bld.radius,12)
 			fill_circle_tiles(bld.x+1,bld.y+1,bld.radius,12)
+		end
+		if bld.sprite == "farm" then
+			flow_pattern()
+			fill_circle_tiles(bld.x,bld.y,bld.radius,9)
+			fill_circle_tiles(bld.x+1,bld.y,bld.radius,9)
+			fill_circle_tiles(bld.x,bld.y+1,bld.radius,9)
+			fill_circle_tiles(bld.x+1,bld.y+1,bld.radius,9)
 		end
 		fillp(0)
 	end

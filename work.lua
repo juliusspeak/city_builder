@@ -1,31 +1,16 @@
+function die_at_work()
+    for w in all(get_blds("work")) do
+        if w["workers"] > 1 then
+            local chance = 0
+            if w["has power"] == "yes" then
+                chance = 3
+            else
+                chance = 5
+            end
 
-function get_empty_works()
-    local works = get_blds("work")
-    local del_list = {}
-
-    for w in all(works) do
-        if w["workers"] >= 300 then
-            add(del_list,w)
+            if flr(rnd(chance)) == 0 then
+                w["workers"] -= 1
+            end
         end
     end
-    for w in all(del_list) do
-        del(works,w)
-    end
-    return works
-end
-
-function update_work_power()
-    local works = get_blds("work")
-    for w in all(works) do
-        w["has power"] = "no"
-        local x = w.x
-        local y = w.y
-        if powered[x][y] == true or
-        powered[x+1][y] == true or
-        powered[x][y+1] == true or
-        powered[x+1][y+1] == true then
-            w["has power"] = "yes"
-        end
-    end
-
 end

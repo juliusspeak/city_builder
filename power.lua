@@ -21,3 +21,20 @@ function update_power_map()
 	    end
     end
 end
+
+
+function update_blds_with_power()
+    for bld in all(builds) do
+        if bld["has power"] then
+            bld["has power"] = "no"
+            local x = bld.x
+            local y = bld.y
+            if powered[x][y] == true or
+            powered[x+1][y] == true or
+            powered[x][y+1] == true or
+            powered[x+1][y+1] == true then
+                bld["has power"] = "yes"
+            end
+        end
+    end
+end

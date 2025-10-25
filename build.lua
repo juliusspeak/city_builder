@@ -45,6 +45,10 @@ function spr_build(bld,x,y)
         spr = {34,35,50,51}
 	elseif bld == "power" then
         spr = {45,46,61,62}
+	elseif bld == "farm" then
+        spr = {14,15,30,31}
+	elseif bld == "field" then
+        spr = {55,56,57,58}
 	elseif bld == "bridge" then
 		if spr_map[y][x] == 37 then
         	spr = {59}
@@ -74,12 +78,13 @@ function building(name,x,y)
 	if name == "house" then
 		obj["work hr"] = 0
 		obj["shop hr"] = 0
+		obj["farm hr"] = 0
 		obj["has work"] = "no"
 		obj["has shop"] = "no"
+		obj["has farm"] = "no"
 		obj["tenants"] = 100
 		obj["works"] = {}
 		obj["shops"] = {}
-
 		obj["max tenants"] = 100
 	elseif name == "work" then
 		obj["workers"] = 0
@@ -88,8 +93,16 @@ function building(name,x,y)
 	elseif name == "shop" then
 		obj["buyers"] = 0
 		obj["max buyers"] = 500
+		obj["has power"] = "no"
 	elseif name == "power" then
 		obj["radius"] = 2
+	elseif name == "farm" then
+		obj["fields"] = 0
+		obj["radius"] = 3
+		obj["farmers"] = 0
+		obj["max farmers"] = 1200
+	elseif name == "field" then
+		obj["has barn"] = 0
 	end
 	
 	function obj:get_info()
@@ -97,15 +110,22 @@ function building(name,x,y)
 			obj["info"]["tenants:"] = self["tenants"].."/"..self["max tenants"]
 			obj["info"]["connected to work:"] = self["has work"]
 			obj["info"]["connected to shop:"] = self["has shop"]
+			obj["info"]["connected to farm:"] = self["has farm"]
 			obj["info"]["work travel:"] = self["work hr"].." hr"
 			obj["info"]["shop travel:"] = self["shop hr"].." hr"
+			obj["info"]["farm travel:"] = self["farm hr"].." hr"
 		elseif name == "work" then
 			obj["info"]["workers:"] = self["workers"].."/"..self["max workers"]
 			obj["info"]["connect to power:"] = self["has power"]
 		elseif name == "shop" then
 			obj["info"]["buyers:"] = self["buyers"].."/"..self["max buyers"]
+			obj["info"]["connect to power:"] = self["has power"]
 		elseif name == "power" then
 			obj["info"]["supply radius:"] = self["radius"].." tiles"
+		elseif name == "farm" then
+			obj["info"]["fields:"] = self["fields"]
+			obj["info"]["gather radius:"] = self["radius"].." tiles"
+			obj["info"]["farmers:"] = self["farmers"].."/"..self["max farmers"]
 		end
 		return obj["info"]
 	end
