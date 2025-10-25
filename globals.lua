@@ -79,6 +79,10 @@ function set_globals()
 			ppl_name = "buyers",
 			max_ppl = "max buyers",
         },
+        house = {
+			ppl_name = "tenants",
+			max_ppl = "max tenants",
+        },
     }
 end
 

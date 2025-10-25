@@ -74,21 +74,6 @@ function get_houses_with(bld_name)
     return houses
 end
 
-function house_increase_tenats(house, count)
-    local tenants = house["tenants"]
-    if tenants < 100 then
-        count = min(100 - tenants,count)
-        set_bld_val(house,"tenants",tenants+count)
-    end
-    return count
-end
-function house_reduce_tenats(house, count)
-    local tenants = house["tenants"]
-    count = min(count,tenants)
-    set_bld_val(house,"tenants",tenants-count)
-end
-
-
 function get_nearest(house, bld_name)
     local bld
     local hr = 999

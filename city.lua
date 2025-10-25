@@ -19,6 +19,7 @@ end
 
 
 function go_to_build(bld_name)
+    local dict_name = connect_types[bld_name]["dict"]
     local hr_name = connect_types[bld_name]["hr_name"]
     local ppl_name = connect_types[bld_name]["ppl_name"]
     local max_ppl = connect_types[bld_name]["max_ppl"]
@@ -29,13 +30,14 @@ function go_to_build(bld_name)
 
     for house in all(houses) do
         local part = ceil(house["max tenants"]/house[hr_name])
-        local bld = get_nearest(house,bld_name)
+        local bld-- = get_nearest(house,bld_name)
 
-        if bld != nil and bld[ppl_name] < bld[max_ppl] and house["tenants"] > 0 then
-            local remain = bld_increase_people(bld, min(house["tenants"],part))
-            house_reduce_tenats(house, remain)
+        for bld,hr in pairs(house[dict_name]) do
+            if bld != nil and bld[ppl_name] < bld[max_ppl] and house["tenants"] > 0 then
+                local remain = bld_increase_people(bld, min(house["tenants"],part))
+                bld_reduce_people(house, remain)
+            end
         end
-
     end
 end
 
@@ -52,14 +54,15 @@ function go_to_home(from)
 
     for house in all(houses) do
         local part
-        local from_bld
+        --local from_bld = get_nearest(house,from)
         
         part = ceil(house["max tenants"]/house[hr_name])
-        from_bld = get_nearest(house,from)
-
-        if from_bld != nil and from_bld[ppl_name] > 0 and house["tenants"] < house["max tenants"] then
-            local remain = house_increase_tenats(house, min(from_bld[ppl_name],part))
-            bld_reduce_people(from_bld, remain)
+        
+        for from_bld,hr in pairs(house[dict_name]) do
+            if from_bld != nil and from_bld[ppl_name] > 0 and house["tenants"] < house["max tenants"] then
+                local remain = bld_increase_people(house, min(from_bld[ppl_name],part))
+                bld_reduce_people(from_bld, remain)
+            end
         end
     end
 end
