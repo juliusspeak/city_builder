@@ -18,7 +18,7 @@ function windows()
 	local title
 	title = cur_window
 	local w = 50
-	local h = (#building_names-1) * 7 + 7
+	local h = (#building_names-1) * 7 + 12
 	if cur_window != "build" then
 		win_x, win_y = 8, 8
 		w, h = 108, 108

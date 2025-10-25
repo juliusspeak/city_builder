@@ -55,7 +55,7 @@ function set_globals()
 	end	
 	last_bld = nil
 --info-------------------------
-	money = 2000
+	money = 3000
 	last_money = 0
 	goods = 0
 	last_goods = 0
@@ -129,12 +129,12 @@ function update_globals()
 		hour += speed
 		daytime()
 		update_city()
+		count_people()
 	end
 	if hour >= 24 then
 		day += 1
 		hour = 0
 	end
-	count_people()
 end
 
 function count_people()
