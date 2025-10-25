@@ -13,3 +13,19 @@ function get_empty_works()
     end
     return works
 end
+
+function update_work_power()
+    local works = get_blds("work")
+    for w in all(works) do
+        w["has power"] = "no"
+        local x = w.x
+        local y = w.y
+        if powered[x][y] == true or
+        powered[x+1][y] == true or
+        powered[x][y+1] == true or
+        powered[x+1][y+1] == true then
+            w["has power"] = "yes"
+        end
+    end
+
+end

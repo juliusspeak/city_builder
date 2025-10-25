@@ -37,11 +37,14 @@ function change_mouse_pos(type,vol)
 	cursor_input = "btn"
 	if cur_window == "" then
 		mouse_cell[type] += vol
+		mouse_cell[type] = mid(0,mouse_cell[type],120)
 	else
 		if type == "x" then
 			mouse_x += vol/2
+			mouse_x = mid(0,mouse_x,120)
 		else
 			mouse_y += vol/2
+			mouse_y = mid(0,mouse_y,120)
 		end
 	end
 end
@@ -59,10 +62,14 @@ function lmb_pressed()
 	check_lmb()
 	set_win_coor()
 	lmb = 1
+	mouse_x = mouse_cell.x
+	mouse_y = mouse_cell.y
 end
 function rmb_pressed()
 	cur_window = ""
 	cur_menu_line = ""
+	mouse_cell.x = ceil(mouse_x/8) * 8
+	mouse_cell.y = ceil(mouse_y/8) * 8
 end
 function check_lmb()
 	local x

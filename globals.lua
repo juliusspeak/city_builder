@@ -64,6 +64,14 @@ function set_globals()
 	sec = 0
 	speed = 0.1
 --city-------------------------
+	powered = {}
+    for x=-1,16 do
+        powered[x] = {}
+        for y=-1,16 do
+            powered[x][y] = false
+        end
+    end
+	
     connect_types = {
         work = {
             dict = "works",

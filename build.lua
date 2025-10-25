@@ -83,11 +83,10 @@ function building(name,x,y)
 		obj["max tenants"] = 100
 	elseif name == "work" then
 		obj["workers"] = 0
-
 		obj["max workers"] = 300
+		obj["has power"] = "no"
 	elseif name == "shop" then
 		obj["buyers"] = 0
-
 		obj["max buyers"] = 500
 	elseif name == "power" then
 		obj["radius"] = 2
@@ -102,6 +101,7 @@ function building(name,x,y)
 			obj["info"]["shop travel:"] = self["shop hr"].." hr"
 		elseif name == "work" then
 			obj["info"]["workers:"] = self["workers"].."/"..self["max workers"]
+			obj["info"]["connect to power:"] = self["has power"]
 		elseif name == "shop" then
 			obj["info"]["buyers:"] = self["buyers"].."/"..self["max buyers"]
 		elseif name == "power" then

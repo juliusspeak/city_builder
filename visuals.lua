@@ -117,7 +117,7 @@ function daytime()
 end
 
 function is_work_mark(bld)
-	no_mark_list = {"bridge"}
+	no_mark_list = {"bridge","power"}
 	local x,y = bld.x*8, bld.y*8
 	
 	local mark = false

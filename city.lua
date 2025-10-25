@@ -1,4 +1,7 @@
 function update_city()
+    update_power_map()
+    update_work_power()
+
     update_house_list_of("work")
     update_house_connects_to("work")
     update_house_list_of("shop")
