@@ -1,12 +1,4 @@
 
-function work_increase_workers(work, count)
-    local workers = work["workers"]
-    if workers < 300 then
-        count = min(300 - workers,count)
-        set_bld_val(work,"workers",workers+count)
-    end
-    return count
-end
 
 function work_reduce_workers(work, count)
     local workers = work["workers"]
@@ -27,17 +19,4 @@ function get_empty_works()
         del(works,w)
     end
     return works
-end
-
-
-function get_nearest_work(house)
-    local work
-    local hr = 999
-    for _work, _hr in pairs(house.works) do
-        if _hr < hr then
-            hr = _hr
-            work = _work
-        end
-    end 
-    return work
 end

@@ -63,6 +63,23 @@ function set_globals()
 	day = 0
 	sec = 0
 	speed = 0.1
+--city-------------------------
+    connect_types = {
+        work = {
+            dict = "works",
+            var_name = "has work",
+            hr_name = "work hr",
+			ppl_name = "workers",
+			max_ppl = "max workers",
+        },
+        shop = {
+            dict = "shops",
+            var_name = "has shop",
+            hr_name = "shop hr",
+			ppl_name = "buyers",
+			max_ppl = "max buyers",
+        },
+    }
 end
 
 function update_globals()

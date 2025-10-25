@@ -1,16 +1,4 @@
 function update_house_connects_to(bld_name)
-    local connect_types = {
-        work = {
-            dict = "works",
-            var_name = "has work",
-            hr_name = "work hr"
-        },
-        shop = {
-            dict = "shops",
-            var_name = "has shop",
-            hr_name = "shop hr"
-        },
-    }
     local dict_name = connect_types[bld_name]["dict"]
     local var_name = connect_types[bld_name]["var_name"]
     local hr_name = connect_types[bld_name]["hr_name"]
@@ -35,18 +23,6 @@ end
 
 
 function update_house_list_of(bld_name)
-    local connect_types = {
-        work = {
-            dict = "works",
-            var_name = "has work",
-            hr_name = "work hr"
-        },
-        shop = {
-            dict = "shops",
-            var_name = "has shop",
-            hr_name = "shop hr"
-        },
-    }
     local dict_name = connect_types[bld_name]["dict"]
     local var_name = connect_types[bld_name]["var_name"]
     local hr_name = connect_types[bld_name]["hr_name"]
@@ -82,12 +58,13 @@ function get_real_dist(val)
     return val
 end
 
-function get_houses_with_work()
+function get_houses_with(bld_name)
     local houses = get_blds("house")
+    local var_name = connect_types[bld_name]["var_name"]
     local del_list = {}
 
     for h in all(houses) do
-        if h["has work"] == "no" then
+        if h[var_name] == "no" then
             add(del_list,h)
         end
     end
@@ -111,17 +88,38 @@ function house_reduce_tenats(house, count)
     set_bld_val(house,"tenants",tenants-count)
 end
 
-function get_houses_with_shop()
-    local houses = get_blds("house")
-    local del_list = {}
 
-    for h in all(houses) do
-        if h["has shop"] == "no" then
-            add(del_list,h)
+function get_nearest(house, bld_name)
+    local bld
+    local hr = 999
+    local dict_name = connect_types[bld_name]["dict"]
+    for _bld, _hr in pairs(house[dict_name]) do
+        if _hr < hr then
+            hr = _hr
+            bld = _bld
         end
+    end 
+    return bld
+end
+
+
+function bld_increase_people(bld, count)
+    local ppl_name = connect_types[bld.sprite]["ppl_name"]
+    local max_ppl = connect_types[bld.sprite]["max_ppl"]
+    local people = bld[ppl_name]
+
+    if people < bld[max_ppl] then
+        count = min(bld[max_ppl] - people,count)
+        set_bld_val(bld,ppl_name,people+count)
     end
-    for h in all(del_list) do
-        del(houses, h)
-    end
-    return houses
+    return count
+end
+
+function bld_reduce_people(bld, count)
+    local ppl_name = connect_types[bld.sprite]["ppl_name"]
+    local max_ppl = connect_types[bld.sprite]["max_ppl"]
+    local people = bld[ppl_name]
+    
+    count = min(count,people)
+    set_bld_val(bld,ppl_name,people-count)
 end
