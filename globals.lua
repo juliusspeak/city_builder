@@ -3,14 +3,18 @@ function set_globals()
 --mouse------------------------
 	mouse_x = 0
 	mouse_y = 0
-	
+	pseudo_x = 0
+	pseudo_y = 0
+	old_m_x = 0
+	old_m_y = 0
 	mouse_cell = {
 		x = 0,
 		y = 0
 	}
 	
 	lmb = 1
-
+	btn_delay = 0
+	cursor_input = "btn"
 --ui---------------------------
 	cur_window = ""
 	win_x = 0
@@ -20,6 +24,7 @@ function set_globals()
 	cur_menu_line = ""
 
 	particles = {}
+	flow_pattern_delay = 0
 --sprites----------------------
 	road_sprites = {8,9,10,11,12,13,24,27,28,40,42, 43,59}
 	river_sprites = {36,37,38,52,53,54}
@@ -37,6 +42,7 @@ function set_globals()
 		road = 10,
 		bridge = 50,
 		house = 100,
+		power = 250,
 		clinic = 200,
 		work = 300,
 		shop = 500
@@ -60,11 +66,21 @@ function set_globals()
 end
 
 function update_globals()
-	mouse_x = stat(32)
-	mouse_y = stat(33)
+	pseudo_mouse_x = stat(32)
+	pseudo_mouse_y = stat(33)
+	if cursor_input == "mouse" then
+		mouse_x = stat(32)
+		mouse_y = stat(33)
+		mouse_cell.x = ceil(mouse_x/8) * 8
+		mouse_cell.y = ceil(mouse_y/8) * 8
+	end
+
+	if old_m_x != pseudo_mouse_x and old_m_y != pseudo_mouse_y then
+		old_m_x = pseudo_mouse_x
+		old_m_y = pseudo_mouse_y
+		cursor_input = "mouse"
+	end
 	
-	mouse_cell.x = ceil(mouse_x/8) * 8
-	mouse_cell.y = ceil(mouse_y/8) * 8
 	
 	if speed != 0 then
 		sec += 1

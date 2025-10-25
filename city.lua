@@ -1,8 +1,9 @@
 function update_city()
-    update_works_for_houses()
-    update_house_connects_to_works()
-    update_shops_for_houses()
-    update_house_connects_to_shops()
+    update_house_list_of("work")
+    update_house_connects_to("work")
+    update_house_list_of("shop")
+    update_house_connects_to("shop")
+    
     if hour >= 6 and hour < 12 then
         go_to_work()
         pay_for_work()

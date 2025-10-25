@@ -16,7 +16,6 @@ function _draw()
 	cls()
 	map()
 	spr_map_draw()
-	update_marks()
+	visuals()
 	ui()
-	all_particles()
 end

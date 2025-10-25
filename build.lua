@@ -43,6 +43,8 @@ function spr_build(bld,x,y)
         spr = {6,7,22,23}
 	elseif bld == "shop" then
         spr = {34,35,50,51}
+	elseif bld == "power" then
+        spr = {45,46,61,62}
 	elseif bld == "bridge" then
 		if spr_map[y][x] == 37 then
         	spr = {59}
@@ -87,6 +89,8 @@ function building(name,x,y)
 		obj["buyers"] = 0
 
 		obj["max buyers"] = 500
+	elseif name == "power" then
+		obj["radius"] = 2
 	end
 	
 	function obj:get_info()
@@ -100,6 +104,8 @@ function building(name,x,y)
 			obj["info"]["workers:"] = self["workers"].."/"..self["max workers"]
 		elseif name == "shop" then
 			obj["info"]["buyers:"] = self["buyers"].."/"..self["max buyers"]
+		elseif name == "power" then
+			obj["info"]["supply radius:"] = self["radius"].." tiles"
 		end
 		return obj["info"]
 	end
@@ -134,6 +140,9 @@ function demolish(x,y)
 			del(builds,bld)
 			sfx(2)
 			money += flr(bld_price[bld.sprite]/2)
+		elseif has(road_sprites, spr_map[y][x]) then
+			spr_map[y][x] = 0
+			money += flr(bld_price["road"]/2)
 		end
 		
 	end

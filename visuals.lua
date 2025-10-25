@@ -2,8 +2,8 @@ function visual_pointer()
 	local x
 	local y
 	if cur_window == "" then
-		x = min(mouse_cell.x,120)
-		y = min(mouse_cell.y,120)
+		x = mid(0,mouse_cell.x,120)
+		y = mid(0,mouse_cell.y,120)
 		if cur_menu_line == "" then
 			draw_cursor(x,y,0)
 		elseif cur_menu_line ==
@@ -15,6 +15,8 @@ function visual_pointer()
 	else
 		x = mouse_x
 		y = mouse_y
+		x = mid(0,x,120)
+		y = mid(0,y,120)
 		draw_cursor(x,y,1)
 	end
 end
@@ -180,7 +182,9 @@ function process_particle()
 	end
 end
 
-function all_particles()
+function visuals()
+	update_marks()
+
 	if last_money < money then
 		add_text_particle("+$"..tostr(money-last_money),5,115,11,40)
 	elseif last_money > money then
@@ -195,6 +199,8 @@ function all_particles()
 	last_goods = goods
 	last_money = money
 	process_particle()
+
+	hover()
 end
 
 function draw_river(x,y)
@@ -357,4 +363,48 @@ end
 function map_preporation()
 	draw_river(0,flr(rnd(5))+5)
 	fix_roads()
+end
+
+function flow_pattern()
+	if flow_pattern_delay < 4 then
+		fillp(0b0111111111011111.1)
+	elseif flow_pattern_delay >= 4 and flow_pattern_delay < 8 then
+		fillp(0b1110111110111111.1)
+	elseif flow_pattern_delay >= 8 and flow_pattern_delay < 12 then
+		fillp(0b1111110111110111.1)
+	elseif flow_pattern_delay >= 12 and flow_pattern_delay < 16 then
+		fillp(0b1111101111111110.1)
+	elseif flow_pattern_delay >= 16 and flow_pattern_delay < 20 then
+		fillp(0b1111011111111101.1)
+	elseif flow_pattern_delay >= 20 and flow_pattern_delay < 24 then
+		fillp(0b1011111111101111.1)
+	end
+	flow_pattern_delay += 1
+	if flow_pattern_delay >= 24 then
+		flow_pattern_delay = 0
+	end
+end
+
+function fill_circle_tiles(tx,ty,r,col)
+	for y=-r,r do
+		for x=-r,r do
+			if x^2 + y^2 <= r^2 then
+				rectfill((tx+x)*8,(ty+y)*8,(tx+x+1)*8,(ty+y+1)*8,col)
+			end
+		end
+	end
+end
+
+function hover()
+	local bld = find_building(mouse_cell.x/8,mouse_cell.y/8)
+	if bld != nil then
+		if bld.sprite == "power" then
+			flow_pattern()
+			fill_circle_tiles(bld.x,bld.y,bld.radius,12)
+			fill_circle_tiles(bld.x+1,bld.y,bld.radius,12)
+			fill_circle_tiles(bld.x,bld.y+1,bld.radius,12)
+			fill_circle_tiles(bld.x+1,bld.y+1,bld.radius,12)
+		end
+		fillp(0)
+	end
 end

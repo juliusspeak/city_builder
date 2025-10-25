@@ -1,66 +1,78 @@
-function update_house_connects_to_works()
-    for house in all(get_blds("house")) do
-        
-        if dict_size(house.works) > 0 then
-            set_bld_val(house,"has work","yes")
-            set_bld_val(house,"work hr",999)
+function update_house_connects_to(bld_name)
+    local connect_types = {
+        work = {
+            dict = "works",
+            var_name = "has work",
+            hr_name = "work hr"
+        },
+        shop = {
+            dict = "shops",
+            var_name = "has shop",
+            hr_name = "shop hr"
+        },
+    }
+    local dict_name = connect_types[bld_name]["dict"]
+    local var_name = connect_types[bld_name]["var_name"]
+    local hr_name = connect_types[bld_name]["hr_name"]
 
-            for work, hr in pairs(house.works) do
-                if hr < house["work hr"] then
-                   set_bld_val(house,"work hr",hr)
+    for house in all(get_blds("house")) do
+        if dict_size(house[dict_name]) > 0 then
+            set_bld_val(house,var_name,"yes")
+            set_bld_val(house,hr_name,999)
+
+            for bld, hr in pairs(house[dict_name]) do
+                if hr < house[hr_name] then
+                   set_bld_val(house,hr_name,hr)
                 end
             end 
             
         else
-            set_bld_val(house,"has work","no")
-            set_bld_val(house,"work hr",0)
+            set_bld_val(house,var_name,"no")
+            set_bld_val(house,hr_name,0)
         end
     end
 end
 
-function update_works_for_houses()
+
+function update_house_list_of(bld_name)
+    local connect_types = {
+        work = {
+            dict = "works",
+            var_name = "has work",
+            hr_name = "work hr"
+        },
+        shop = {
+            dict = "shops",
+            var_name = "has shop",
+            hr_name = "shop hr"
+        },
+    }
+    local dict_name = connect_types[bld_name]["dict"]
+    local var_name = connect_types[bld_name]["var_name"]
+    local hr_name = connect_types[bld_name]["hr_name"]
+
     local houses = get_blds("house")
-    local works = get_blds("work")
+    local blds = get_blds(bld_name)
 
     for h in all(houses) do
-        h.works = {}
+        h[dict_name]= {}
     end
 
-    for work in all(works) do
+    for bld in all(blds) do
         for house in all(houses) do
-            local dist_to_work = dist(house.x,house.y+2,work.x,work.y+2)
-            if dist_to_work > 0 then
-                house.works[work] = get_real_dist(dist_to_work)
+            local dist_to = dist(house.x,house.y+2,bld.x,bld.y+2)
+            if dist_to > 0 then
+                house[dict_name][bld] = get_real_dist(dist_to)
             else
-                if has(house.works,work) then
-                    house.works[work] = nil
+                if has(house[dict_name][bld]) then
+                    house[dict_name][bld] = nil
                 end
             end
         end
     end
 end
 
-function update_shops_for_houses()
-    local houses = get_blds("house")
-    local shops = get_blds("shop")
 
-    for h in all(houses) do
-        h.shops = {}
-    end
-
-    for shop in all(shops) do
-        for house in all(houses) do
-            local dist_to_shop = dist(house.x,house.y+2,shop.x,shop.y+2)
-            if dist_to_shop > 0 then
-                house.shops[shop] = get_real_dist(dist_to_shop)
-            else
-                if has(house.shops,shop) then
-                    house.shops[shop] = nil
-                end
-            end
-        end
-    end
-end
 function get_real_dist(val)
     if flr(val/5) < 1 then
         val = 1
@@ -68,25 +80,6 @@ function get_real_dist(val)
         val = flr(val/5)
     end
     return val
-end
-function update_house_connects_to_shops()
-    for house in all(get_blds("house")) do
-        
-        if dict_size(house.shops) > 0 then
-            set_bld_val(house,"has shop","yes")
-            set_bld_val(house,"shop hr",999)
-
-            for shop, hr in pairs(house.shops) do
-                if hr < house["shop hr"] then
-                   set_bld_val(house,"shop hr",hr)
-                end
-            end 
-            
-        else
-            set_bld_val(house,"has shop","no")
-            set_bld_val(house,"shop hr",0)
-        end
-    end
 end
 
 function get_houses_with_work()

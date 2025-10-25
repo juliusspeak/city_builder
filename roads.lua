@@ -21,6 +21,7 @@ function build_road()
 	local price = bld_price["road"]
 	if has(road_sprites, spr_map[y][x]) then
 		spr_map[y][x] = 0
+		money += flr(bld_price["road"]/2)
 	elseif spr_map[y][x] == 0 and money >= price then
 		spr_map[y][x] = 9
 		money -= price

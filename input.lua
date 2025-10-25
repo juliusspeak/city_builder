@@ -1,27 +1,74 @@
 function input()
 	if stat(34) == 1 then
 		if stat(34) != lmb then
-			check_lmb()
-			
-			set_win_coor()
-			
-			lmb = 1
+			lmb_pressed()
 		end
 	else
 		lmb = 0
 	end
 	
 	if stat(34) == 2 then
-		cur_window = ""
-		cur_menu_line = ""
+		rmb_pressed()
+	end
+
+	if btnp(❎) then
+		cursor_input = "btn"
+		lmb_pressed()
+	end
+	if btnp(🅾️) then
+		cursor_input = "btn"
+		rmb_pressed()
+	end
+	if btnp(➡️) then
+		change_mouse_pos("x",8)
+	end
+	if btnp(⬅️) then
+		change_mouse_pos("x",-8)
+	end
+	if btnp(⬆️) then
+		change_mouse_pos("y",-8)
+	end
+	if btnp(⬇️) then
+		change_mouse_pos("y",8)
 	end
 end
 
+function change_mouse_pos(type,vol)
+	cursor_input = "btn"
+	if cur_window == "" then
+		mouse_cell[type] += vol
+	else
+		if type == "x" then
+			mouse_x += vol/2
+		else
+			mouse_y += vol/2
+		end
+	end
+end
+
+function allow_button()
+	btn_delay += 1
+	if btn_delay >= 4 then
+		btn_delay = 0
+		return true
+	else
+		return false
+	end
+end
+function lmb_pressed()
+	check_lmb()
+	set_win_coor()
+	lmb = 1
+end
+function rmb_pressed()
+	cur_window = ""
+	cur_menu_line = ""
+end
 function check_lmb()
 	local x
 	local y
-	x =	mouse_cell.x/8
-	y = mouse_cell.y/8
+	x =	mid(0,mouse_cell.x/8,120)
+	y = mid(0,mouse_cell.y/8,120)
 	
 	if x == 15 and y == 14 then
         cur_menu_line = "demolish"
@@ -73,19 +120,19 @@ function check_lmb()
 end
 
 function set_win_coor()
-	local x_size = #(cur_window .." ("	.. tostr(ceil(mouse_x/8)) ..
-	"," ..tostr(ceil(mouse_y/8))..")") * 4 + 2
+	local x_size = #(cur_window .." ("	.. tostr(ceil(mouse_cell.x/8)) ..
+	"," ..tostr(ceil(mouse_cell.y/8))..")") * 4 + 2
     
-	if mouse_x < 128-x_size then
-		win_x = mouse_x
+	if mouse_cell.x < 128-x_size then
+		win_x = mouse_cell.x
 	else
-		win_x = mouse_x-x_size
+		win_x = mouse_cell.x-x_size
 	end
 	
-	if mouse_y < 74 then
-		win_y = mouse_y
+	if mouse_cell.y < 64 then
+		win_y = mouse_cell.y
 	else
-		win_y = 74
+		win_y = 64
 	end
 	
 	if win_x < 8 then

@@ -16,8 +16,8 @@ function windows()
 	end
 
 	local title
-	title = cur_window .. " (".. tostr(ceil(win_x/8))..","..tostr(ceil(win_y/8)).. ")"
-	local w = #title * 4 + 10
+	title = cur_window
+	local w = 50
 	local h = #building_names * 7 + 7
 	if cur_window != "build" then
 		win_x, win_y = 8, 8
@@ -49,9 +49,10 @@ function draw_build_lines(x,y)
 	menu_line(x+3,y+12,"road")
 	menu_line(x+3,y+18,"bridge")
 	menu_line(x+3,y+24,"house")
-	menu_line(x+3,y+30,"work")
-	menu_line(x+3,y+36,"shop")
-	menu_line(x+3,y+42,"clinic")
+	menu_line(x+3,y+30,"power")
+	menu_line(x+3,y+36,"work")
+	menu_line(x+3,y+42,"shop")
+	menu_line(x+3,y+48,"clinic")
 end
 
 function menu_line(_x,_y,name)
