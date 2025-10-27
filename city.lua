@@ -11,8 +11,11 @@ function update_city()
     update_house_connects_to("farm")
 
     if hour >= 6 and hour < 12 then
-        go_to_build("work")
-        go_to_build("farm")
+        if flr(rnd(2)) == 0 then
+            go_to_build("work")
+        else
+            go_to_build("farm")
+        end
         die_at_work()
         breed_people()
         pay_for_work()
