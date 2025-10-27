@@ -132,9 +132,11 @@ function building(name,x,y)
 
 	function obj:self_destroy()
 		spr_map[self.y][self.x] = 0
-		spr_map[self.y][self.x+1] = 0
-		spr_map[self.y+1][self.x] = 0
-		spr_map[self.y+1][self.x+1] = 0
+		if self.sprite != "bridge" then
+			spr_map[self.y][self.x+1] = 0
+			spr_map[self.y+1][self.x] = 0
+			spr_map[self.y+1][self.x+1] = 0
+		end
 	end
 	
 	function obj:is_part(x,y)
